@@ -13,5 +13,15 @@ namespace Veggy.Core
                 Duration = duration;
             }
         }
+
+        public class SquashPomodoro
+        {
+            public string Reason { get; }
+
+            public SquashPomodoro(string reason)
+            {
+                Reason = reason;
+            }
+        }
     }
 }

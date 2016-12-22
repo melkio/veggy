@@ -9,12 +9,18 @@ namespace Veggy.Core
         public Timer()
         {
             Receive<StartPomodoro>(command => !isTicking, HandleStartPomodoro);
+            Receive<SquashPomodoro>(command => HandleSquashPomodoro(command));
         }
 
         private void HandleStartPomodoro(StartPomodoro command)
         {
             isTicking = true;
             Sender.Tell(new PomodoroStarted(command.Duration));
+        }
+
+        private void HandleSquashPomodoro(SquashPomodoro command)
+        {
+            Sender.Tell(new PomodoroSquashed(command.Reason));
         }
     }
 }

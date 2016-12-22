@@ -24,9 +24,9 @@ namespace Veggy.Core.Tests
         [Test]
         public void Start_pomodoro_command_fails_when_another_pomodoro_is_ticking()
         {
-            IgnoreMessages(message =>
+            IgnoreMessages(m =>
             {
-                var target = message as Timer.PomodoroStarted;
+                var target = m as Timer.PomodoroStarted;
                 if (target == null)
                     return false;
 
@@ -43,6 +43,20 @@ namespace Veggy.Core.Tests
             ExpectNoMsg();
         }
 
+        [Test]
+        public void Squash_pomodoro_command_when_pomodoro_is_ticking()
+        {
+            IgnoreMessages(m => m is Timer.PomodoroStarted);
 
+            const string reason = "reason";
+            var command = new Timer.SquashPomodoro(reason);
+            var timer = Sys.ActorOf(Props.Create<Timer>());
+
+            timer.Tell(new Timer.StartPomodoro(TimeSpan.FromSeconds(1)));
+            timer.Tell(command);
+
+            var message = ExpectMsg<Timer.PomodoroSquashed>();
+            Assert.AreEqual(reason, message.Reason);
+        }
     }
 }
