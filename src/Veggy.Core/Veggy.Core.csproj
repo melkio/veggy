@@ -54,6 +54,9 @@
   <ItemGroup>
     <Compile Include="EchoActor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Timer.cs" />
+    <Compile Include="TimerCommands.cs" />
+    <Compile Include="TimerEvents.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
