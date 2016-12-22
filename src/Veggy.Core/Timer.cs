@@ -9,7 +9,7 @@ namespace Veggy.Core
         public Timer()
         {
             Receive<StartPomodoro>(command => !isTicking, HandleStartPomodoro);
-            Receive<SquashPomodoro>(command => HandleSquashPomodoro(command));
+            Receive<SquashPomodoro>(command => isTicking, HandleSquashPomodoro);
         }
 
         private void HandleStartPomodoro(StartPomodoro command)

@@ -58,5 +58,17 @@ namespace Veggy.Core.Tests
             var message = ExpectMsg<Timer.PomodoroSquashed>();
             Assert.AreEqual(reason, message.Reason);
         }
+
+        [Test]
+        public void Squash_pomodoro_command_fails_when_pomodoro_is_not_ticking()
+        {
+            const string reason = "reason";
+            var command = new Timer.SquashPomodoro(reason);
+            var timer = Sys.ActorOf(Props.Create<Timer>());
+
+            timer.Tell(command);
+
+            ExpectNoMsg();
+        }
     }
 }
