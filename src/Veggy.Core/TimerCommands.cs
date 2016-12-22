@@ -23,5 +23,9 @@ namespace Veggy.Core
                 Reason = reason;
             }
         }
+
+        private class CompletePomodoro
+        {
+        }
     }
 }

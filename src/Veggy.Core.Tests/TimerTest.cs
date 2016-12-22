@@ -70,5 +70,19 @@ namespace Veggy.Core.Tests
 
             ExpectNoMsg();
         }
+
+        [Test]
+        public void Should_complete_after_duration()
+        {
+            IgnoreMessages(m => m is Timer.PomodoroStarted);
+
+            var duration = TimeSpan.FromSeconds(1);
+            var command = new Timer.StartPomodoro(duration);
+            var timer = Sys.ActorOf(Props.Create<Timer>());
+
+            timer.Tell(command);
+
+            ExpectMsg<Timer.PomodoroCompleted>();
+        }
     }
 }
