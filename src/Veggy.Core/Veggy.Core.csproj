@@ -52,11 +52,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Command.cs" />
+    <Compile Include="DomainEvent.cs" />
     <Compile Include="EchoActor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="TimerCommands.cs" />
     <Compile Include="TimerEvents.cs" />
+    <Compile Include="TimersCoordinator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

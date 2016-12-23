@@ -12,7 +12,7 @@ namespace Veggy.Core.Tests
         public void Start_pomodoro_command()
         {
             var duration = TimeSpan.FromSeconds(1);
-            var command = new Timer.StartPomodoro(duration);
+            var command = new Timer.StartPomodoro("conversation-id", "timer-id", duration);
             var timer = Sys.ActorOf(Props.Create<Timer>());
 
             timer.Tell(command);
@@ -37,8 +37,8 @@ namespace Veggy.Core.Tests
 
             var timer = Sys.ActorOf(Props.Create<Timer>());
 
-            timer.Tell(new Timer.StartPomodoro(duration));
-            timer.Tell(new Timer.StartPomodoro(TimeSpan.FromSeconds(5)));
+            timer.Tell(new Timer.StartPomodoro("conversation-id", "timer-id", duration));
+            timer.Tell(new Timer.StartPomodoro("conversation-id", "timer-id", TimeSpan.FromSeconds(5)));
 
             ExpectNoMsg();
         }
@@ -49,10 +49,10 @@ namespace Veggy.Core.Tests
             IgnoreMessages(m => m is Timer.PomodoroStarted);
 
             const string reason = "reason";
-            var command = new Timer.SquashPomodoro(reason);
+            var command = new Timer.SquashPomodoro("conversation-id", "timer-id", reason);
             var timer = Sys.ActorOf(Props.Create<Timer>());
 
-            timer.Tell(new Timer.StartPomodoro(TimeSpan.FromSeconds(1)));
+            timer.Tell(new Timer.StartPomodoro("conversation-id", "timer-id", TimeSpan.FromSeconds(1)));
             timer.Tell(command);
 
             var message = ExpectMsg<Timer.PomodoroSquashed>();
@@ -63,7 +63,7 @@ namespace Veggy.Core.Tests
         public void Squash_pomodoro_command_fails_when_pomodoro_is_not_ticking()
         {
             const string reason = "reason";
-            var command = new Timer.SquashPomodoro(reason);
+            var command = new Timer.SquashPomodoro("conversation-id", "timer-id", reason);
             var timer = Sys.ActorOf(Props.Create<Timer>());
 
             timer.Tell(command);
@@ -77,7 +77,7 @@ namespace Veggy.Core.Tests
             IgnoreMessages(m => m is Timer.PomodoroStarted);
 
             var duration = TimeSpan.FromSeconds(1);
-            var command = new Timer.StartPomodoro(duration);
+            var command = new Timer.StartPomodoro("conversation-id", "timer-id", duration);
             var timer = Sys.ActorOf(Props.Create<Timer>());
 
             timer.Tell(command);
@@ -92,8 +92,8 @@ namespace Veggy.Core.Tests
 
             var timer = Sys.ActorOf(Props.Create<Timer>());
 
-            timer.Tell(new Timer.StartPomodoro(TimeSpan.FromSeconds(1)));
-            timer.Tell(new Timer.SquashPomodoro("reason"));
+            timer.Tell(new Timer.StartPomodoro("conversation-id", "timer-id", TimeSpan.FromSeconds(1)));
+            timer.Tell(new Timer.SquashPomodoro("conversation-id", "timer-id", "reason"));
 
             ExpectNoMsg();
         }
