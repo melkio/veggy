@@ -24,20 +24,20 @@ namespace Veggy.Core.Tests
         [Test]
         public void Start_pomodoro_command_fails_when_another_pomodoro_is_ticking()
         {
+            var duration = TimeSpan.FromSeconds(10);
+
             IgnoreMessages(m =>
             {
                 var target = m as Timer.PomodoroStarted;
                 if (target == null)
                     return false;
 
-                return target.Duration == TimeSpan.FromSeconds(1);
+                return target.Duration == duration;
             });
 
-            var duration = TimeSpan.FromSeconds(1);
-            var command = new Timer.StartPomodoro(duration);
             var timer = Sys.ActorOf(Props.Create<Timer>());
 
-            timer.Tell(command);
+            timer.Tell(new Timer.StartPomodoro(duration));
             timer.Tell(new Timer.StartPomodoro(TimeSpan.FromSeconds(5)));
 
             ExpectNoMsg();
@@ -83,6 +83,19 @@ namespace Veggy.Core.Tests
             timer.Tell(command);
 
             ExpectMsg<Timer.PomodoroCompleted>();
+        }
+
+        [Test]
+        public void Complete_pomodoro_command_fails_when_pomodoro_is_not_ticking()
+        {
+            IgnoreMessages(m => m is Timer.PomodoroStarted || m is Timer.PomodoroSquashed);
+
+            var timer = Sys.ActorOf(Props.Create<Timer>());
+
+            timer.Tell(new Timer.StartPomodoro(TimeSpan.FromSeconds(1)));
+            timer.Tell(new Timer.SquashPomodoro("reason"));
+
+            ExpectNoMsg();
         }
     }
 }

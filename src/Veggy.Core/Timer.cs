@@ -10,7 +10,7 @@ namespace Veggy.Core
         {
             Receive<StartPomodoro>(command => !isTicking, HandleStartPomodoro);
             Receive<SquashPomodoro>(command => isTicking, HandleSquashPomodoro);
-            Receive<CompletePomodoro>(command => HandleCompletePomodoro(command));
+            Receive<CompletePomodoro>(command => isTicking, HandleCompletePomodoro);
         }
 
         private void HandleStartPomodoro(StartPomodoro command)
@@ -23,11 +23,15 @@ namespace Veggy.Core
 
         private void HandleSquashPomodoro(SquashPomodoro command)
         {
+            isTicking = false;
+
             Sender.Tell(new PomodoroSquashed(command.Reason));
         }
 
         private void HandleCompletePomodoro(CompletePomodoro command)
         {
+            isTicking = false;
+
             Sender.Tell(new PomodoroCompleted());
         }
     }
