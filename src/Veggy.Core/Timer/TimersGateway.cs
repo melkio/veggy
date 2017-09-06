@@ -12,22 +12,22 @@ namespace Veggy.Core.Timer
         {
             this.eventStore = eventStore;
 
-            Receive<StartPomodoro>(command => HandleStartPomodoroCommand(command));
-            Receive<PomodoroStarted>(domainEvent => HandlePomodoroStartedEvent(domainEvent));
+            Receive<StartPomodoro>(message => Handle(message));
+            Receive<PomodoroStarted>(message => Handle(message));
         }
 
-        private void HandleStartPomodoroCommand(StartPomodoro command)
+        private void Handle(StartPomodoro message)
         {
-            var timer = Context.Child(command.TimerId);
+            var timer = Context.Child(message.TimerId);
             if (timer.IsNobody())
-                timer = Context.ActorOf<TimerActor>(command.TimerId);
+                timer = Context.ActorOf<TimerActor>(message.TimerId);
 
-            timer.Tell(command);
+            timer.Tell(message);
         }
 
-        private void HandlePomodoroStartedEvent(PomodoroStarted domainEvent)
+        private void Handle(PomodoroStarted message)
         {
-            eventStore.Tell(domainEvent);
+            eventStore.Tell(message);
         }
     }
 }

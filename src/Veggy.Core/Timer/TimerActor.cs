@@ -10,12 +10,12 @@ namespace Veggy.Core.Timer
 
         public TimerActor()
         {
-            Receive<StartPomodoro>(command => !isTicking, HandleStartPomodoro);
-            Receive<SquashPomodoro>(command => isTicking, HandleSquashPomodoro);
-            Receive<CompletePomodoro>(command => isTicking, HandleCompletePomodoro);
+            Receive<StartPomodoro>(message => !isTicking, Handle);
+            Receive<SquashPomodoro>(message => isTicking, Handle);
+            Receive<CompletePomodoro>(message => isTicking, Handle);
         }
 
-        private void HandleStartPomodoro(StartPomodoro command)
+        private void Handle(StartPomodoro command)
         {
             isTicking = true;
             
@@ -23,14 +23,14 @@ namespace Veggy.Core.Timer
             Sender.Tell(new PomodoroStarted(command.ConversationId, command.TimerId, command.Duration));
         }
 
-        private void HandleSquashPomodoro(SquashPomodoro command)
+        private void Handle(SquashPomodoro command)
         {
             isTicking = false;
 
             Sender.Tell(new PomodoroSquashed("conversation-id", "timer-id", command.Reason));
         }
 
-        private void HandleCompletePomodoro(CompletePomodoro command)
+        private void Handle(CompletePomodoro command)
         {
             isTicking = false;
 
