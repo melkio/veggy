@@ -55,16 +55,21 @@
     <Compile Include="Command.cs" />
     <Compile Include="DomainEvent.cs" />
     <Compile Include="EchoActor.cs" />
+    <Compile Include="Timer\Events\PomodoroCompleted.cs" />
+    <Compile Include="Timer\Events\PomodoroSquashed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Timer.cs" />
-    <Compile Include="TimerCommands.cs" />
-    <Compile Include="TimerEvents.cs" />
-    <Compile Include="TimersCoordinator.cs" />
+    <Compile Include="Timer\Commands\SquashPomodoro.cs" />
+    <Compile Include="Timer\Commands\StartPomodoro.cs" />
+    <Compile Include="Timer\TimerActor.cs" />
+    <Compile Include="Timer\Commands\CompletePomodoro.cs" />
+    <Compile Include="Timer\Events\PomodoroStarted.cs" />
+    <Compile Include="Timer\TimersGateway.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

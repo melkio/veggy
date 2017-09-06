@@ -1,12 +1,14 @@
 ﻿using Akka.Actor;
+using Veggy.Core.Timer.Commands;
+using Veggy.Core.Timer.Events;
 
-namespace Veggy.Core
+namespace Veggy.Core.Timer
 {
-    public partial class Timer : ReceiveActor
+    public class TimerActor : ReceiveActor
     {
         private bool isTicking;
 
-        public Timer()
+        public TimerActor()
         {
             Receive<StartPomodoro>(command => !isTicking, HandleStartPomodoro);
             Receive<SquashPomodoro>(command => isTicking, HandleSquashPomodoro);

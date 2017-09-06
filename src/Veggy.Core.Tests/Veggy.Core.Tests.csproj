@@ -66,8 +66,8 @@
   <ItemGroup>
     <Compile Include="EchoActorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TimersCoordinatorTest.cs" />
-    <Compile Include="TimerTest.cs" />
+    <Compile Include="TimersGatewayTest.cs" />
+    <Compile Include="TimerActorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
