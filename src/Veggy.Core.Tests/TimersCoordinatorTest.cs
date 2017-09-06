@@ -23,5 +23,20 @@ namespace Veggy.Core.Tests
             Assert.AreEqual("my-timer-id", domainEvent.TimerId);
             Assert.AreEqual(TimeSpan.FromSeconds(1), domainEvent.Duration);
         }
+
+        [Test]
+        public void Start_pomodoro_command_for_two_timers()
+        {
+            var probe = CreateTestProbe("probe");
+
+            var coordinator = Sys.ActorOf(Props.Create(() => new TimersCoordinator(probe)));
+
+            coordinator.Tell(new Timer.StartPomodoro("my-conversation-id", "my-timer-id-1", TimeSpan.FromSeconds(1)));
+            coordinator.Tell(new Timer.StartPomodoro("my-conversation-id", "my-timer-id-2", TimeSpan.FromSeconds(5)));
+
+            probe.ExpectMsgAllOf(
+                new Timer.PomodoroStarted("my-conversation-id", "my-timer-id-1", TimeSpan.FromSeconds(1)),
+                new Timer.PomodoroStarted("my-conversation-id", "my-timer-id-2", TimeSpan.FromSeconds(5)));
+        }
     }
 }
